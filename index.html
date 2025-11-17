@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Tapioca Artisan • Pre-Order</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-primary: #1a1a2e;
+            --dark-secondary: #16213e;
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --cream: #faf8f3;
+            --text-light: #a8a8a8;
+            --accent: #e94560;
+            --success: #4CAF50;
+            --error: #f44336;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-primary);
+            color: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--dark-secondary) 0%, var(--dark-primary) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .brand-tagline {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .status-bar {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            padding: 10px;
+            margin: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .promo-banner {
+            background: var(--accent);
+            color: white;
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .promo-close {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .promo-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            padding: 0 15px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 0;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--gold);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+            text-align: center;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .menu-card {
+            background: var(--dark-secondary);
+            border: 2px solid rgba(212, 175, 55, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .menu-card.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .menu-card.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--gold);
+            color: var(--dark-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .menu-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-content {
+            padding: 20px;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .menu-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--cream);
+        }
+
+        .menu-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .menu-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            background: rgba(212, 175, 55, 0.08);
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 10px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            font-weight: bold;
+        }
+
+        .qty-btn:active {
+            background: var(--gold);
+            color: var(--dark-primary);
+            transform: scale(0.9);
+        }
+
+        .qty-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+            color: var(--gold);
+        }
+
+        .quick-add {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-add-btn {
+            flex: 1;
+            padding: 8px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quick-add-btn:active {
+            background: var(--gold);
+            color: var(--dark-primary);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--dark-secondary);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            color: var(--cream);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        input.error, select.error, textarea.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.75rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23d4af37' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .slider-container {
+            background: var(--dark-secondary);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .slider-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin-bottom: 10px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .payment-option {
+            background: var(--dark-secondary);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .payment-option.selected {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .payment-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--cream);
+        }
+
+        .gcash-details {
+            display: none;
+            background: rgba(212, 175, 55, 0.05);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gcash-details.active {
+            display: block;
+        }
+
+        .gcash-number {
+            background: var(--dark-primary);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .gcash-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .gcash-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .order-summary-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark-secondary);
+            border-top: 2px solid var(--gold);
+            padding: 15px;
+            z-index: 99;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .order-summary-fixed.hidden {
+            transform: translateY(100%);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .summary-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            -webkit-tap-highlight-color: transparent;
+            max-width: 800px;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .action-btn.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--dark-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .order-summary-detail {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .summary-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .summary-total-large {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 2px solid var(--gold);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-cart-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .cart-bubble {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            cursor: pointer;
+            z-index: 98;
+            transition: all 0.3s ease;
+            transform: scale(0);
+        }
+
+        .cart-bubble.show {
+            transform: scale(1);
+        }
+
+        .cart-bubble:active {
+            transform: scale(0.9);
+        }
+
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-content {
+            background: var(--dark-secondary);
+            border: 2px solid var(--gold);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .success-text {
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .success-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .success-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .success-btn.primary {
+            background: var(--gold);
+            color: var(--dark-primary);
+        }
+
+        .success-btn:active {
+            transform: scale(0.98);
+        }
+
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .edit-content {
+            background: var(--dark-secondary);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .edit-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+        }
+
+        .edit-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .privacy-note {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .privacy-note::before {
+            content: "🔒";
+        }
+
+        @media (min-width: 600px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .cart-bubble {
+                bottom: 120px;
+                right: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="brand-name">Tapioca Artisan</div>
+        <div class="brand-tagline">Premium Filipino Tapioca</div>
+    </div>
+
+    <div class="status-bar">
+        <span class="status-dot"></span>
+        Order Cutoff: 3PM • Pickup: 5PM
+    </div>
+
+    <div class="promo-banner" id="promoBanner">
+        🎉 OPENING SPECIAL: Buy 5, Get 1 FREE
+        <button class="promo-close" id="promoClose">×</button>
+    </div>
+
+    <div class="step-indicator">
+        <div class="step-dot active" id="stepDot1"></div>
+        <div class="step-dot" id="stepDot2"></div>
+    </div>
+
+    <div class="container">
+        <!-- STEP 1: Select Items -->
+        <div class="step active" id="step1">
+            <div class="section-title">Select Your Favorites</div>
+            
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+
+        <!-- STEP 2: Details & Checkout -->
+        <div class="step" id="step2">
+            <div class="section-title">Complete Your Order</div>
+
+            <div class="order-summary-detail" id="orderSummaryDetail"></div>
+
+            <form id="orderForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name *</label>
+                    <input type="text" id="name" required placeholder="Juan Dela Cruz" autocomplete="name">
+                    <div class="error-message" id="nameError">Please enter your name</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" id="phone" required placeholder="09XX XXX XXXX" autocomplete="tel" pattern="[0-9]{11}">
+                    <div class="error-message" id="phoneError">Please enter a valid 11-digit phone number</div>
+                    <div class="privacy-note">We'll only use this to confirm your order</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Facebook/Messenger (Optional)</label>
+                    <input type="text" id="messenger" placeholder="@yourfbname or facebook.com/yourname" autocomplete="off">
+                    <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 5px;">
+                        For customer support and updates
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Special Instructions (Optional)</label>
+                    <textarea id="instructions" placeholder="Any special requests or allergies..." rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Sugar Level</label>
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span style="color: var(--text-light); font-size: 0.9rem;">Adjust sweetness</span>
+                            <span class="slider-value" id="sugarValue">100%</span>
+                        </div>
+                        <input type="range" class="slider" id="sugarLevel" min="0" max="100" value="100" step="25">
+                        <div class="slider-labels">
+                            <span>0%</span>
+                            <span>25%</span>
+                            <span>50%</span>
+                            <span>75%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Payment Method *</label>
+                    <div class="payment-options">
+                        <div class="payment-option" id="codOption" onclick="selectPayment('cod')">
+                            <div class="payment-icon">💵</div>
+                            <div class="payment-label">Cash on Pickup</div>
+                        </div>
+                        <div class="payment-option" id="gcashOption" onclick="selectPayment('gcash')">
+                            <div class="payment-icon">📱</div>
+                            <div class="payment-label">GCash</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gcash-details" id="gcashDetails">
+                    <div class="gcash-number">
+                        <div class="gcash-label">Send Payment To</div>
+                        <div class="gcash-value">0917 123 4567</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">GCash Reference Number *</label>
+                        <input type="text" id="refNumber" placeholder="Enter reference number" autocomplete="off">
+                        <div class="error-message" id="refError">Please enter your GCash reference number</div>
+                    </div>
+                </div>
+
+                <button type="button" class="action-btn secondary" onclick="goToStep(1)">← Back to Menu</button>
+                <button type="submit" class="action-btn" id="submitBtn">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fixed Bottom Summary (Step 1 only) -->
+    <div class="order-summary-fixed" id="fixedSummary">
+        <div class="summary-row">
+            <span class="summary-label">Total (<span id="itemCount">0</span> items)</span>
+            <span class="summary-value" id="totalAmount">₱0</span>
+        </div>
+        <button class="action-btn" id="continueBtn" onclick="goToStep(2)" disabled>
+            Continue to Checkout
+        </button>
+    </div>
+
+    <!-- Cart Bubble (Step 2 only) -->
+    <div class="cart-bubble" id="cartBubble">
+        <span id="cartBubbleCount">0</span>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-content">
+            <div class="edit-header">
+                <div class="edit-title" id="editTitle">Edit Item</div>
+                <button class="edit-close" id="editClose">×</button>
+            </div>
+            <div class="quantity-selector" style="margin-bottom: 20px;">
+                <button type="button" class="qty-btn" onclick="changeEditQty(-1)">−</button>
+                <div class="qty-display" id="editQty">0</div>
+                <button type="button" class="qty-btn" onclick="changeEditQty(1)">+</button>
+            </div>
+            <button class="action-btn" onclick="saveEdit()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">✨</div>
+            <div class="success-title">Order Confirmed!</div>
+            <p class="success-text">Thank you for your order.</p>
+            <p class="success-text">We'll prepare your tapioca with care.</p>
+            <p class="success-text" style="margin-top: 15px; font-weight: 600;">You'll receive an SMS confirmation shortly.</p>
+            <div class="success-actions">
+                <button class="success-btn" onclick="closeSuccess()">Close</button>
+                <button class="success-btn primary" onclick="newOrder()">New Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        // Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylJlDySjkqN4oFk2vnJl8dUF_DOUnJNl_RyBO5r7oKydhot8yD_DQWvaW708n7DDL83Q/exec';
+        
+        // Google Sheets ID (extracted from your URL)
+        const SPREADSHEET_ID = '1B5GEOv7e_JJZUrhkARfet7Jmx3RLn5N49D_HJy8CuAE';
+
+        // Menu items - Add your image URLs here
+        const menuItems = [
+            { 
+                id: 'milk', 
+                name: 'Creamy Milk', 
+                icon: '🥛', 
+                price: 25, 
+                desc: 'Classic creamy tapioca pearls with fresh milk',
+                image: '', // Add image URL
+                popular: false
+            },
+            { 
+                id: 'mango', 
+                name: 'Mango', 
+                icon: '🥭', 
+                price: 30, 
+                desc: 'Refreshing tropical mango flavor with chewy pearls',
+                image: '',
+                popular: true
+            },
+            { 
+                id: 'pandan', 
+                name: 'Buko Pandan', 
+                icon: '🌿', 
+                price: 30, 
+                desc: 'Filipino favorite coconut-pandan blend',
+                image: '',
+                popular: true
+            },
+            { 
+                id: 'milo', 
+                name: 'Milo Chocolate', 
+                icon: '🫐', 
+                price: 25, 
+                desc: 'Rich chocolatey goodness with premium Milo',
+                image: '',
+                popular: false
+            },
+            { 
+                id: 'coffee', 
+                name: 'Coffee', 
+                icon: '☕', 
+                price: 25, 
+                desc: 'Perfect study fuel with aromatic coffee kick',
+                image: '',
+                popular: false
+            }
+        ];
+
+        const quantities = {};
+        let currentStep = 1;
+        let selectedPayment = '';
+        let editingItemId = null;
+        menuItems.forEach(item => quantities[item.id] = 0);
+
+        // Initialize from localStorage if available
+        function loadFromStorage() {
+            const savedQuantities = localStorage.getItem('tapiocaQuantities');
+            const savedFormData = localStorage.getItem('tapiocaFormData');
+            
+            if (savedQuantities) {
+                const parsed = JSON.parse(savedQuantities);
+                Object.keys(parsed).forEach(id => {
+                    if (quantities.hasOwnProperty(id)) {
+                        quantities[id] = parsed[id];
+                    }
+                });
+            }
+            
+            if (savedFormData) {
+                const parsed = JSON.parse(savedFormData);
+                document.getElementById('name').value = parsed.name || '';
+                document.getElementById('phone').value = parsed.phone || '';
+                document.getElementById('messenger').value = parsed.messenger || '';
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('tapiocaQuantities', JSON.stringify(quantities));
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                messenger: document.getElementById('messenger').value
+            };
+            localStorage.setItem('tapiocaFormData', JSON.stringify(formData));
+        }
+
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = menuItems.map(item => `
+                <div class="menu-card" id="card_${item.id}" onclick="selectCard('${item.id}')">
+                    ${item.popular ? '<div class="popular-badge">Popular</div>' : ''}
+                    ${item.image ? 
+                        `<img src="${item.image}" alt="${item.name}">` : 
+                        `<div class="menu-image">${item.icon}</div>`
+                    }
+                    <div class="menu-content">
+                        <div class="menu-header">
+                            <div class="menu-name">${item.name}</div>
+                            <div class="menu-price">₱${item.price}</div>
+                        </div>
+                        <div class="menu-desc">${item.desc}</div>
+                        <div class="quantity-selector">
+                            <button type="button" class="qty-btn" onclick="event.stopPropagation(); changeQty('${item.id}', -1)">−</button>
+                            <div class="qty-display" id="qty_${item.id}">0</div>
+                            <button type="button" class="qty-btn" onclick="event.stopPropagation(); changeQty('${item.id}', 1)">+</button>
+                        </div>
+                        <div class="quick-add">
+                            <div class="quick-add-btn" onclick="event.stopPropagation(); changeQty('${item.id}', 1)">+1</div>
+                            <div class="quick-add-btn" onclick="event.stopPropagation(); changeQty('${item.id}', 2)">+2</div>
+                            <div class="quick-add-btn" onclick="event.stopPropagation(); changeQty('${item.id}', 5)">Promo (5)</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update all quantities after rendering
+            menuItems.forEach(item => {
+                document.getElementById(`qty_${item.id}`).textContent = quantities[item.id];
+                const card = document.getElementById(`card_${item.id}`);
+                if (quantities[item.id] > 0) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        }
+
+        function selectCard(id) {
+            // Visual feedback when card is tapped
+            const card = document.getElementById(`card_${id}`);
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Auto-add one item when card is tapped
+            changeQty(id, 1);
+        }
+
+        function changeQty(id, delta) {
+            quantities[id] = Math.max(0, quantities[id] + delta);
+            document.getElementById(`qty_${id}`).textContent = quantities[id];
+            
+            const card = document.getElementById(`card_${id}`);
+            if (quantities[id] > 0) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+            
+            updateSummary();
+            saveToStorage();
+            
+            // Show cart bubble on step 2 if items are added
+            if (currentStep === 2 && delta > 0) {
+                showCartBubble();
+            }
+        }
+
+        function updateSummary() {
+            const items = menuItems.filter(item => quantities[item.id] > 0);
+            const totalQty = Object.values(quantities).reduce((a, b) => a + b, 0);
+            const total = menuItems.reduce((sum, item) => sum + (quantities[item.id] * item.price), 0);
+
+            document.getElementById('itemCount').textContent = totalQty;
+            document.getElementById('totalAmount').textContent = `₱${total}`;
+            document.getElementById('continueBtn').disabled = totalQty === 0;
+            document.getElementById('cartBubbleCount').textContent = totalQty;
+
+            if (items.length > 0) {
+                const summaryHTML = items.map(item => `
+                    <div class="summary-item" onclick="openEditModal('${item.id}')">
+                        <span>${item.icon} ${item.name} ×${quantities[item.id]}</span>
+                        <span>₱${quantities[item.id] * item.price}</span>
+                    </div>
+                `).join('') + `
+                    <div class="summary-total-large">
+                        <span>Total</span>
+                        <span>₱${total}</span>
+                    </div>
+                `;
+                document.getElementById('orderSummaryDetail').innerHTML = summaryHTML;
+            } else {
+                document.getElementById('orderSummaryDetail').innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <div>Your cart is empty</div>
+                        <button class="action-btn secondary" style="margin-top: 15px;" onclick="goToStep(1)">Browse Menu</button>
+                    </div>
+                `;
+            }
+        }
+
+        function openEditModal(id) {
+            editingItemId = id;
+            document.getElementById('editTitle').textContent = `Edit ${menuItems.find(item => item.id === id).name}`;
+            document.getElementById('editQty').textContent = quantities[id];
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function changeEditQty(delta) {
+            if (!editingItemId) return;
+            quantities[editingItemId] = Math.max(0, quantities[editingItemId] + delta);
+            document.getElementById('editQty').textContent = quantities[editingItemId];
+        }
+
+        function saveEdit() {
+            if (editingItemId) {
+                document.getElementById(`qty_${editingItemId}`).textContent = quantities[editingItemId];
+                const card = document.getElementById(`card_${editingItemId}`);
+                if (quantities[editingItemId] > 0) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+                updateSummary();
+                saveToStorage();
+            }
+            document.getElementById('editModal').style.display = 'none';
+            editingItemId = null;
+        }
+
+        function showCartBubble() {
+            const bubble = document.getElementById('cartBubble');
+            bubble.classList.add('show');
+            setTimeout(() => {
+                bubble.classList.remove('show');
+            }, 3000);
+        }
+
+        // Sugar level slider
+        document.getElementById('sugarLevel').addEventListener('input', function() {
+            document.getElementById('sugarValue').textContent = this.value + '%';
+        });
+
+        // Payment selection
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.getElementById('codOption').classList.remove('selected');
+            document.getElementById('gcashOption').classList.remove('selected');
+            
+            if (method === 'cod') {
+                document.getElementById('codOption').classList.add('selected');
+                document.getElementById('gcashDetails').classList.remove('active');
+                document.getElementById('refNumber').removeAttribute('required');
+            } else {
+                document.getElementById('gcashOption').classList.add('selected');
+                document.getElementById('gcashDetails').classList.add('active');
+                document.getElementById('refNumber').setAttribute('required', 'required');
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('stepDot1').classList.remove('active');
+            document.getElementById('stepDot2').classList.remove('active');
+            document.getElementById('fixedSummary').classList.remove('hidden');
+
+            if (step === 1) {
+                document.getElementById('step1').classList.add('active');
+                document.getElementById('stepDot1').classList.add('active');
+                document.getElementById('cartBubble').classList.remove('show');
+            } else {
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('stepDot2').classList.add('active');
+                document.getElementById('fixedSummary').classList.add('hidden');
+                updateSummary();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Name validation
+            const name = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            if (!name.value.trim()) {
+                name.classList.add('error');
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                name.classList.remove('error');
+                nameError.style.display = 'none';
+            }
+            
+            // Phone validation
+            const phone = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+            const phoneRegex = /^[0-9]{11}$/;
+            const cleanPhone = phone.value.replace(/\D/g, '');
+            if (!phoneRegex.test(cleanPhone)) {
+                phone.classList.add('error');
+                phoneError.style.display = 'block';
+                isValid = false;
+            } else {
+                phone.classList.remove('error');
+                phoneError.style.display = 'none';
+            }
+            
+            // GCash reference number validation
+            if (selectedPayment === 'gcash') {
+                const refNumber = document.getElementById('refNumber');
+                const refError = document.getElementById('refError');
+                if (!refNumber.value.trim()) {
+                    refNumber.classList.add('error');
+                    refError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    refNumber.classList.remove('error');
+                    refError.style.display = 'none';
+                }
+            }
+            
+            return isValid;
+        }
+
+        // ===== FORM SUBMISSION =====
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!selectedPayment) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const total = menuItems.reduce((sum, item) => sum + (quantities[item.id] * item.price), 0);
+            
+            // Get clean phone number (remove dashes)
+            const cleanPhone = document.getElementById('phone').value.replace(/\D/g, '');
+
+            // Prepare form data to send to Google Sheets
+            const formData = {
+                timestamp: new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' }),
+                name: document.getElementById('name').value,
+                phone: cleanPhone,
+                messenger: document.getElementById('messenger').value || 'N/A',
+                instructions: document.getElementById('instructions').value || 'N/A',
+                milk: quantities.milk,
+                mango: quantities.mango,
+                pandan: quantities.pandan,
+                milo: quantities.milo,
+                coffee: quantities.coffee,
+                total: total,
+                sugarLevel: document.getElementById('sugarLevel').value + '%',
+                payment: selectedPayment === 'cod' ? 'Cash on Pickup' : 'GCash',
+                refNumber: selectedPayment === 'gcash' ? document.getElementById('refNumber').value : 'N/A'
+            };
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.classList.add('loading');
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Note: With 'no-cors' mode, we can't read the response
+                // but we can assume success if no error is thrown
+                
+                // Clear storage on successful order
+                localStorage.removeItem('tapiocaQuantities');
+                localStorage.removeItem('tapiocaFormData');
+                
+                // Show success modal
+                document.getElementById('successModal').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                alert('Something went wrong. Please try again or contact us directly.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm Order';
+                submitBtn.classList.remove('loading');
+            }
+        });
+
+        function closeSuccess() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        function newOrder() {
+            document.getElementById('successModal').style.display = 'none';
+            // Reset quantities
+            menuItems.forEach(item => quantities[item.id] = 0);
+            renderMenu();
+            updateSummary();
+            document.getElementById('orderForm').reset();
+            selectedPayment = '';
+            document.getElementById('codOption').classList.remove('selected');
+            document.getElementById('gcashOption').classList.remove('selected');
+            document.getElementById('gcashDetails').classList.remove('active');
+            document.getElementById('sugarLevel').value = 100;
+            document.getElementById('sugarValue').textContent = '100%';
+            goToStep(1);
+        }
+
+        // Initialize
+        document.getElementById('editClose').addEventListener('click', function() {
+            document.getElementById('editModal').style.display = 'none';
+            editingItemId = null;
+        });
+
+        document.getElementById('promoClose').addEventListener('click', function() {
+            document.getElementById('promoBanner').style.display = 'none';
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            // Format as 09XX-XXX-XXXX for display
+            if (value.length > 7) {
+                this.value = value.substring(0, 4) + '-' + value.substring(4, 7) + '-' + value.substring(7);
+            } else if (value.length > 4) {
+                this.value = value.substring(0, 4) + '-' + value.substring(4);
+            } else {
+                this.value = value;
+            }
+        });
+
+        // Auto-capitalize name field
+        document.getElementById('name').addEventListener('input', function() {
+            this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+        });
+
+        // Load saved data and initialize
+        loadFromStorage();
+        renderMenu();
+        updateSummary();
+    </script>
+</body>
+</html>
