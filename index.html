@@ -904,7 +904,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Phone Number *</label>
-                    <input type="tel" id="phone" required placeholder="09XX XXX XXXX" autocomplete="tel" pattern="[0-9]{11}">
+                    <input type="tel" id="phone" required placeholder="09171234567" autocomplete="tel" inputmode="numeric">
                     <div class="error-message" id="phoneError">Please enter a valid 11-digit phone number</div>
                     <div class="privacy-note">We'll only use this to confirm your order</div>
                 </div>
@@ -1021,13 +1021,9 @@
 
     <script>
         // ===== CONFIGURATION =====
-        // Google Apps Script Web App URL
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylJlDySjkqN4oFk2vnJl8dUF_DOUnJNl_RyBO5r7oKydhot8yD_DQWvaW708n7DDL83Q/exec';
-        
-        // Google Sheets ID (extracted from your URL)
         const SPREADSHEET_ID = '1B5GEOv7e_JJZUrhkARfet7Jmx3RLn5N49D_HJy8CuAE';
 
-        // Menu items - Add your image URLs here
         const menuItems = [
             { 
                 id: 'milk', 
@@ -1035,7 +1031,7 @@
                 icon: '🥛', 
                 price: 25, 
                 desc: 'Classic creamy tapioca pearls with fresh milk',
-                image: '', // Add image URL
+                image: '',
                 popular: false
             },
             { 
@@ -1082,7 +1078,6 @@
         let editingItemId = null;
         menuItems.forEach(item => quantities[item.id] = 0);
 
-        // Initialize from localStorage if available
         function loadFromStorage() {
             const savedQuantities = localStorage.getItem('tapiocaQuantities');
             const savedFormData = localStorage.getItem('tapiocaFormData');
@@ -1144,7 +1139,6 @@
                 </div>
             `).join('');
             
-            // Update all quantities after rendering
             menuItems.forEach(item => {
                 document.getElementById(`qty_${item.id}`).textContent = quantities[item.id];
                 const card = document.getElementById(`card_${item.id}`);
@@ -1157,14 +1151,11 @@
         }
 
         function selectCard(id) {
-            // Visual feedback when card is tapped
             const card = document.getElementById(`card_${id}`);
             card.style.transform = 'scale(0.98)';
             setTimeout(() => {
                 card.style.transform = 'scale(1)';
             }, 150);
-            
-            // Auto-add one item when card is tapped
             changeQty(id, 1);
         }
 
@@ -1182,7 +1173,6 @@
             updateSummary();
             saveToStorage();
             
-            // Show cart bubble on step 2 if items are added
             if (currentStep === 2 && delta > 0) {
                 showCartBubble();
             }
@@ -1259,12 +1249,10 @@
             }, 3000);
         }
 
-        // Sugar level slider
         document.getElementById('sugarLevel').addEventListener('input', function() {
             document.getElementById('sugarValue').textContent = this.value + '%';
         });
 
-        // Payment selection
         function selectPayment(method) {
             selectedPayment = method;
             document.getElementById('codOption').classList.remove('selected');
@@ -1305,7 +1293,6 @@
         function validateForm() {
             let isValid = true;
             
-            // Name validation
             const name = document.getElementById('name');
             const nameError = document.getElementById('nameError');
             if (!name.value.trim()) {
@@ -1317,7 +1304,6 @@
                 nameError.style.display = 'none';
             }
             
-            // Phone validation
             const phone = document.getElementById('phone');
             const phoneError = document.getElementById('phoneError');
             const phoneRegex = /^[0-9]{11}$/;
@@ -1331,7 +1317,6 @@
                 phoneError.style.display = 'none';
             }
             
-            // GCash reference number validation
             if (selectedPayment === 'gcash') {
                 const refNumber = document.getElementById('refNumber');
                 const refError = document.getElementById('refError');
@@ -1348,7 +1333,6 @@
             return isValid;
         }
 
-        // ===== FORM SUBMISSION =====
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -1362,11 +1346,8 @@
             }
 
             const total = menuItems.reduce((sum, item) => sum + (quantities[item.id] * item.price), 0);
-            
-            // Get clean phone number (remove dashes)
             const cleanPhone = document.getElementById('phone').value.replace(/\D/g, '');
 
-            // Prepare form data to send to Google Sheets
             const formData = {
                 timestamp: new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' }),
                 name: document.getElementById('name').value,
@@ -1390,7 +1371,7 @@
             submitBtn.classList.add('loading');
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 
@@ -1399,14 +1380,9 @@
                     body: JSON.stringify(formData)
                 });
 
-                // Note: With 'no-cors' mode, we can't read the response
-                // but we can assume success if no error is thrown
-                
-                // Clear storage on successful order
                 localStorage.removeItem('tapiocaQuantities');
                 localStorage.removeItem('tapiocaFormData');
                 
-                // Show success modal
                 document.getElementById('successModal').style.display = 'flex';
                 
             } catch (error) {
@@ -1424,7 +1400,6 @@
 
         function newOrder() {
             document.getElementById('successModal').style.display = 'none';
-            // Reset quantities
             menuItems.forEach(item => quantities[item.id] = 0);
             renderMenu();
             updateSummary();
@@ -1438,7 +1413,6 @@
             goToStep(1);
         }
 
-        // Initialize
         document.getElementById('editClose').addEventListener('click', function() {
             document.getElementById('editModal').style.display = 'none';
             editingItemId = null;
@@ -1448,29 +1422,15 @@
             document.getElementById('promoBanner').style.display = 'none';
         });
 
-        // Phone number formatting
+        // Phone number - only numbers, no formatting
         document.getElementById('phone').addEventListener('input', function() {
-            let value = this.value.replace(/\D/g, '');
-            if (value.length > 11) {
-                value = value.substring(0, 11);
-            }
-            
-            // Format as 09XX-XXX-XXXX for display
-            if (value.length > 7) {
-                this.value = value.substring(0, 4) + '-' + value.substring(4, 7) + '-' + value.substring(7);
-            } else if (value.length > 4) {
-                this.value = value.substring(0, 4) + '-' + value.substring(4);
-            } else {
-                this.value = value;
-            }
+            this.value = this.value.replace(/\D/g, '').substring(0, 11);
         });
 
-        // Auto-capitalize name field
         document.getElementById('name').addEventListener('input', function() {
             this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
         });
 
-        // Load saved data and initialize
         loadFromStorage();
         renderMenu();
         updateSummary();
